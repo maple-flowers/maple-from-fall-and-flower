@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import re
 
-# from modules import script_callbacks,scripts
+from modules import script_callbacks,scripts
 
 path="extensions/maple-from-fall-and-flower/scripts"
 if not os.path.exists(path+"/search.json"):
