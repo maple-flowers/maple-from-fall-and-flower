@@ -229,6 +229,13 @@ def delete_to_out(dele):
     putVar("one_tags",[])
     return gr.update(choices=[]),[],"",gr.update(choices=[]),[]
 
+def delete_one_to_out(radio, dro, bas):
+    tags = getVar("one_tags", [])
+    new_tags = list(filter(lambda a: a != radio, tags))
+    putVar("one_tags",new_tags)
+    new_out, _ = radio_to_out(dro, bas)
+    return gr.update(choices=new_tags, value=None), new_out, gr.update(choices=list(map(lambda a: re.sub('【.*$', '', a), new_tags)))
+
 def rr(tex,nu,r1818,check):
     check0,check1=text_to_check(tex,nu,r1818,check)
     if "R18" in r1818:
@@ -302,6 +309,7 @@ def on_ui_tabs():
                     maohao=gr.Slider(minimum=-20,maximum=20,step=0.001,label="此处可拉动选择括号权重",value=0)
                     big = gr.Button("增加选定tag权重")
                     small = gr.Button("减少选定tag权重")
+                    deleteOne = gr.Button("点我删除选中tag")
                     delete=gr.Button("点我清空选中tag")
                     nname=gr.Textbox(label="此处填写欲收藏组合/单个咒语名称,为空则默认格式")
                     zhoucun=gr.Button("点我保存框中文本为组合咒语")
@@ -409,6 +417,7 @@ def on_ui_tabs():
             tagqian.click(fn=check_to_sub,inputs=[tagout,radio,dro,tagqian,bas],outputs=[radio,out,bas,bas,dro])
             tagdel.click(fn=tag_del,inputs=tagradio,outputs=[tagradio,tagout,tagradio])
 
+        deleteOne.click(fn = delete_one_to_out, inputs = [radio, dro, bas], outputs = [radio, out, bas])
         delete.click(fn=delete_to_out,inputs=delete,outputs=[radio,check,out,bas,bas])
         big.click(fn=big_to_radio, inputs=radio, outputs=radio)
         small.click(fn=small_to_radio, inputs=radio, outputs=radio)
